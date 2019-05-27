@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Softnet piatti",
+    "slug": "softnetpiatti",
+    "privacy": "public",
+    "sdkVersion": "32.0.0",
+    "ios": {
+      "bundleIdentifier": "com.softnet.piatti"
+    },
+    "android": {
+      "package": "com.softnet.piatti"
+    },
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "extra": {
+      "apiUrl": "http://planner.piattitenniscenter.soft-net.it/"
+    },
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+  }
+}

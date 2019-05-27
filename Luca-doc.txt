@@ -1,0 +1,15 @@
+Avviare applicazione con Expo:
+	- posizionarsi nella root del progetto e avviare il comando "expo start" da riga di comando, dopodichè scansionare con l'app Expo il qr code che appare. In questo modo dovrebbe avviare l'applicazione. Per il debug su android shakerare l'iphone e cliccare su "Enable Remote JS debugging", così viene aperta una finestra su Chrome che, aprendo la console di debugging di Chrome, permette di debuggare l'app. 
+
+
+Build applicazione per android con Expo:
+	- nella root del progetto lanciare comando "expo build:android" (dopo aver scritto la versione nell'app.json) --> https://docs.expo.io/versions/latest/distribution/building-standalone-apps/, da qui dovrebbe buildare l'sdk, che, una volta scaricato, può essere installato sullo smartphone (se è già installata l'app bisogna disinstallarla) o uploadato su Google Play (qui ogni volta è necessario cambiare la versione)
+
+Il codice dell'app è all'interno della cartella "src" ho suddiviso l'app tra componenti utilizzati, pagine (home, calendario, pagina appuntamenti) e services (gestione chiamate api e navigazione app) -> la suddivisione l'ho fatta io, in realtà sarebbero tutti componenti per React.
+
+I moduli che vengono installati sono nella cartella node_modules.
+
+Per il salvataggio di dati in modo da utilizzare l'app offline, al momento, viene usata una funzione nativa di React chiamata AsyncStorage
+
+Per l'invio di notifiche push viene utilizzata una funzione nativa di Expo che permette di inviare al server un codice univoco che identifica il dispositivo e lo collega al customer (è stato installato un bundle su Symfony)
+
