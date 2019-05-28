@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 2878,
-  "expoServerNgrokUrl": "https://wm-2wu.luka2491.softnet-piatti.exp.direct",
-  "packagerNgrokUrl": "https://packager.wm-2wu.luka2491.softnet-piatti.exp.direct",
-  "ngrokPid": 2949
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

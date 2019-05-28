@@ -233,9 +233,9 @@ export default class CalendarPage extends React.Component {
 	  }
 
 	  renderDay(item) {
-	  	return (
-	      //<View style={styles.emptyDate}><Text>ciaociao</Text></View>
-	    );
+	  	/*return (
+	      <View style={styles.emptyDate}><Text>ciaociao</Text></View>
+	    );*/
 	  }
 
 	render() {
