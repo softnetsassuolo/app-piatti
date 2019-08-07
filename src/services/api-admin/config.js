@@ -38,9 +38,7 @@ export class ApiService {
 
     //qui costruisco il percorso all'API
     static constructUrlFromParams(params:any) {
-        let baseUrl="http://planner.piattitenniscenter.soft-net.it/";
-        //todo bisogna che vada inserendo l'url nell'app.json
-        //let baseUrl=Constants.manifest.extra;
+        let baseUrl=Constants.manifest.extra.apiUrl;
 
         let realpath = "";
 

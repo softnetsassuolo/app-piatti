@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, AsyncStorage, RefreshControl } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import MenuButton from '../components/MenuButton';
 import { Calendar, CalendarList, Agenda, LocaleConfig } from 'react-native-calendars';
@@ -8,14 +8,14 @@ import { Ionicons } from '@expo/vector-icons';
 import ItemsStorage from '../components/ItemsStorage';
 
 //qui setto un array con inglese/francese/italiano a seconda della lingua nel telefono
-/*LocaleConfig.locales['it'] = {
+/*LocaleConfig.locales = LocaleConfig.locales[''];
+LocaleConfig.locales['it'] = {
   monthNames: ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
   monthNamesShort: ['Genn.','Febb.','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Sett.','Ott.','Nov.','Dic.'],
-  dayNames: ['Domenica','Lunedi','Martedi','Mercoledi','Giovedi','Venerdi','Sabato'],
-  dayNamesShort: ['Dom.','Lun.','Mar.','Mer.','Gio.','Ven.','Sab.']
-};*/
+  dayNames: ['Domenica','Lunedi','Martedi','Mercoledi','Giovedi','Venerdi','Sabato']
+};
 
-LocaleConfig.deafultLocale='it';
+LocaleConfig.deafultLocale='it';*/
 
 const data = new Date().toISOString().split('T')[0];
 
@@ -48,7 +48,7 @@ export default class CalendarPage extends React.Component {
     };
 
 	async loadItems(day) {
-		//prima faccio la richiesta dal server per ottenere i dati
+		//prima faccio la richiesta al server per ottenere i dati
 		ItemsStorage.fetchData(this.state.items).then((val) => {
             this.setState({refreshing:false, items:val})
         });
@@ -251,6 +251,7 @@ export default class CalendarPage extends React.Component {
 		        onDayPress={this.renderChangeDay.bind(this)}
 		        rowHasChanged={this.rowHasChanged.bind(this)}
 		        firstDay={1} //così la settimana comincia con il lunedì
+		        onRefresh={this.loadItems.bind(this)}
 		        //renderDay={this.renderDay.bind(this)}
 		        //onDayPress={this.loadItems.bind(this)}
 		        // markingType={'period'}

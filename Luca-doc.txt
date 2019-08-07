@@ -5,11 +5,16 @@ Avviare applicazione con Expo:
 Build applicazione per android con Expo:
 	- nella root del progetto lanciare comando "expo build:android" (dopo aver scritto la versione nell'app.json) --> https://docs.expo.io/versions/latest/distribution/building-standalone-apps/, da qui dovrebbe buildare l'sdk, che, una volta scaricato, può essere installato sullo smartphone (se è già installata l'app bisogna disinstallarla) o uploadato su Google Play (qui ogni volta è necessario cambiare la versione)
 
+BUild applicazione per ios con Expo:
+	- nella root del progetto lanciare comando "expo build:ios", accecedere con le credenziali dell'account App Developer, selezionare sempre la prima opzione (quella che lascia gestire ad Expo i certificati). --> nel caso in cui non ci sia corrispondenza con i certificati e dia qualche errore, bisogna rigenerare il certificato .p12 (fattibile solo su MAC) seguendo questa guida -> https://calvium.com/how-to-make-a-p12-file/
+	Una volta che è stata buildata correttamente l'app e generato il file .ipa, scaricarlo da Expo e fare l'upload del file attraverso Xcode (app su MAC) utilizzando le credenziali specifiche per l'app. Da qui in poi si gestisce tutto attraverso l'account di Apple Developer
+
 Il codice dell'app è all'interno della cartella "src" ho suddiviso l'app tra componenti utilizzati, pagine (home, calendario, pagina appuntamenti) e services (gestione chiamate api e navigazione app) -> la suddivisione l'ho fatta io, in realtà sarebbero tutti componenti per React.
 
 I moduli che vengono installati sono nella cartella node_modules.
 
 Per il salvataggio di dati in modo da utilizzare l'app offline, al momento, viene usata una funzione nativa di React chiamata AsyncStorage
 
-Per l'invio di notifiche push viene utilizzata una funzione nativa di Expo che permette di inviare al server un codice univoco che identifica il dispositivo e lo collega al customer (è stato installato un bundle su Symfony)
+Per l'invio di notifiche push viene utilizzata una funzione nativa di Expo che permette di inviare al server un codice univoco che identifica il dispositivo e lo collega al customer (è stato installato un bundle su Symfony per la parte server)
+
 

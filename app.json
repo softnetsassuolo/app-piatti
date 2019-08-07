@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "Softnet piatti",
-    "slug": "softnetpiatti",
+    "name": "Piatti Tennis Center",
+    "slug": "piattitenniscenter",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "ios": {
-      "bundleIdentifier": "com.softnet.piatti"
+      "bundleIdentifier": "com.softnet.test.piatti"
     },
     "android": {
-      "package": "com.softnet.piatti"
+      "package": "com.softnet.test.piatti"
     },
     "platforms": [
       "ios",
