@@ -3,12 +3,13 @@
     "name": "Piatti Tennis Center",
     "slug": "piattitenniscenter",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "33.0.0",
     "ios": {
       "bundleIdentifier": "com.softnet.test.piatti"
     },
     "android": {
-      "package": "com.softnet.test.piatti"
+      "package": "com.softnet.test.piatti",
+      "versionCode": 3 
     },
     "platforms": [
       "ios",
@@ -17,7 +18,7 @@
     "extra": {
       "apiUrl": "http://planner.piattitenniscenter.it"
     },
-    "version": "1.0.2",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "splash": {
