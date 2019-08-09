@@ -24,7 +24,7 @@ const HomeStack = createStackNavigator({
 });
 const CalendarStack = createStackNavigator({
     Calendario:{
-      screen: CalendarPage
+      screen: CalendarPage,
     }
 });
 const LogoutStack = createStackNavigator({

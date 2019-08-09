@@ -6,6 +6,46 @@ import { Calendar, CalendarList, Agenda, LocaleConfig } from 'react-native-calen
 import { List, ListItem } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 import ItemsStorage from '../components/ItemsStorage';
+import * as Localization from 'expo-localization';
+import i18n from 'i18n-js';
+
+const en = {
+  dashboard_generic_appointment: "Appointment in date",
+  dashboard_generic_turn_day: "Appointment for all day",
+  dashboard_generic_turn_halfday: "Appointment for half day",
+  dashboard_competition_title: "Tournament in date",
+  dashboard_competition_name: "Tournament name",
+  dashboard_competition_state: "State",
+  dashboard_app_hour: "Hour",
+  dashboard_app_court: "Court",
+  dashboard_app_court_type: "Internal/External Court",
+  internal: "Internal",
+  external: "External",
+  partecipant: "Partecipants",
+  no_partecipant: "No athletes",
+  master: "Masters",
+  no_master: "No masters",
+  no_activities: "No activities for this day"
+};
+const it = {
+  dashboard_generic_appointment: "Appuntamento in data",
+  dashboard_generic_turn_day: "Appuntamento per l'intera giornata",
+  dashboard_generic_turn_halfday: "Appuntamento per mezza giornata",
+  dashboard_competition_title: "Competizione in data",
+  dashboard_competition_name: "Nome Competizione",
+  dashboard_competition_state: "Stato",
+  dashboard_app_hour: "Orario",
+  dashboard_app_court: "Campo",
+  dashboard_app_court_type: "Campo Interno/Esterno",
+  internal: "Interno",
+  external: "Esterno",
+  partecipant: "Partecipanti",
+  no_partecipant: "Nessun partecipante",
+  master: "Maestri",
+  no_master: "Nessun maestro",
+  no_activities: "Non sono presenti attività per questa giornata"
+};
+
 
 //qui setto un array con inglese/francese/italiano a seconda della lingua nel telefono
 /*LocaleConfig.locales = LocaleConfig.locales[''];
@@ -98,41 +138,41 @@ export default class CalendarPage extends React.Component {
   		if(typeof item.generic != 'undefined') {
   			return(
 	  			<View style={styles.item}>
-	  				<Text>{item.name}</Text>
-					<Text>{item.generic == "one" ? "Appuntamento per l'intera giornata" : "Appuntamento per mezza giornata"}</Text>
+	  				<Text>{i18n.t('dashboard_generic_appointment') + " " + item.date }</Text>
+					<Text>{item.generic == "one" ? i18n.t('dashboard_generic_turn_day') : i18n.t('dashboard_generic_turn_halfday')}</Text>
 				</View>
 			)
   		}
   		else if(typeof item.competition_name != 'undefined') {
   			return(
   				<View style={styles.item}>
-	  				<Text>{item.name}</Text>
-					<Text style={styles.grassetto}>Competizione: <Text>{item.competition_name}</Text></Text>
-					<Text style={styles.grassetto}>Stato: <Text>{item.competition_state}</Text></Text>
+	  				<Text>{i18n.t('dashboard_generic_appointment') + " " + item.date }</Text>
+					<Text style={styles.grassetto}>{i18n.t('dashboard_competition_name')}: <Text>{item.competition_name}</Text></Text>
+					<Text style={styles.grassetto}>{i18n.t('dashboard_competition_state')}: <Text>{item.competition_state}</Text></Text>
 				</View>
   			)
   		}
   		else {
 	  		return(
 	  			<View style={styles.item}>
-	  				<Text>{item.name}</Text>
-	  				<Text><Text style={styles.grassetto}>Orario: </Text> {item.start} - {item.end}</Text>
-	  				<Text><Text style={styles.grassetto}>Campo: </Text>{item.court}</Text>
+	  				<Text>{i18n.t('dashboard_generic_appointment') + " " + item.date }</Text>
+	  				<Text><Text style={styles.grassetto}>{i18n.t('dashboard_app_hour')}: </Text> {item.start} - {item.end}</Text>
+	  				<Text><Text style={styles.grassetto}>{i18n.t('dashboard_app_court')}: </Text>{item.court}</Text>
 	  				<Text><Text style={styles.grassetto}>Playsight: </Text>{item.playsight=="1" ? "Si" : "No" }</Text>
-	  				<Text><Text style={styles.grassetto}>Campo interno/esterno: </Text>{item.indoor=="1" ? "Interno" : "Esterno" }</Text>
-	  				<Text style={styles.grassetto}>Partecipanti:</Text>
+	  				<Text><Text style={styles.grassetto}>{i18n.t('dashboard_app_court_type')}: </Text>{item.indoor=="1" ? i18n.t('internal') : i18n.t('external') }</Text>
+	  				<Text style={styles.grassetto}>{i18n.t('partecipant')}:</Text>
 			      	<View style={styles.listitem}>
-		  			{item.partecipant_list.athletes.length == 0 ? <Text>Nessun partecipante</Text> : item.partecipant_list.athletes.map((val, index) => {
+		  			{item.partecipant_list.athletes.length == 0 ? <Text>{i18n.t('no_partecipant')}</Text> : item.partecipant_list.athletes.map((val, index) => {
 		  				return(
-		  					<Text key={Math.random()}> > {val.name} {val.surname}</Text>
+		  					<Text key={Math.random()}> {val.name} {val.surname}</Text>
 							)
 		  			})}	      	
 			      	</View>
-			      	<Text style={styles.grassetto}>Maestri:</Text>
+			      	<Text style={styles.grassetto}>{i18n.t('master')}:</Text>
 			      	<View style={styles.listitem}>
-		  			{item.partecipant_list.teachers.length < 1 ? <Text>Nessun maestro</Text> : item.partecipant_list.teachers.map((val, index) => {
+		  			{item.partecipant_list.teachers.length < 1 ? <Text>{i18n.t('no_master')}</Text> : item.partecipant_list.teachers.map((val, index) => {
 		  				return(
-		  					<Text key={Math.random()}> > {val.name} {val.surname}</Text>
+		  					<Text key={Math.random()}> {val.name} {val.surname}</Text>
 							)
 		  			})}	      	
 			      	</View>
@@ -195,14 +235,6 @@ export default class CalendarPage extends React.Component {
 	  	var toRemove = this.state.items[item.date][key];
 	  	var ind = this.state.items[item.date].indexOf(toRemove);
 	  	this.state.items[item.date].splice(ind, 1);
-	  	/*try {
-	  		let itemNewString = JSON.stringify(this.state.items);
-  			await AsyncStorage.setItem('calendarItems', itemNewString);
-  			//let pippo = await AsyncStorage.getItem('calendarItems');
-	  	}
-	  	catch(error) {
-	  		alert(error);
-	  	}*/
 	  	const updateItems = {};
 	    Object.keys(this.state.items).forEach(key => {
 	    	updateItems[key] = this.state.items[key];
@@ -214,8 +246,11 @@ export default class CalendarPage extends React.Component {
 	  }
 
 	  renderEmptyDate() {
+	  	i18n.fallbacks = true;
+		i18n.translations = { en, it };
+		i18n.locale = Localization.locale;
 	    return (
-	      <View style={styles.emptyDate}><Text>Non sono presenti attività per questa giornata</Text></View>
+	      <View style={styles.emptyDate}><Text> {i18n.t('no_activities')}</Text></View>
 	    );
 	  }
 

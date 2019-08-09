@@ -2,7 +2,7 @@
  * Created by lmagni on 08/01/2019.
  */
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, RefreshControl, Button, TouchableOpacity, Image, AsyncStorage, ScrollView, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, TextInput, RefreshControl, Button, TouchableOpacity, Image, AsyncStorage, ScrollView, ActivityIndicator, NetInfo } from 'react-native';
 import { createStackNavigator, NavigationActions } from 'react-navigation';
 import { Card } from 'react-native-elements';
 import MenuButton from '../components/MenuButton';
@@ -11,7 +11,59 @@ import { Ionicons, AntDesign, FontAwesome, Foundation, Entypo, MaterialCommunity
 import ItemsStorage from '../components/ItemsStorage';
 import ApiService from '../../services/api-admin/config';
 import { Notifications } from 'expo';
-import { NetInfo } from 'react-native';
+import * as Localization from 'expo-localization';
+import i18n from 'i18n-js';
+
+const en = {
+  txt: 'Welcome in your reserved area, here you can see all your appointments',
+  txt_label: "View my appointments",
+  dashboard_title: "My appointments",
+  dashboard_loading: "Appointments Update",
+  dashboard_calendar: "View on calendar",
+  dashboard_generic_turn_title: "Generic turn in date",
+  dashboard_generic_appointment: "Appointment in date",
+  dashboard_generic_turn_day: "Appointment for all day",
+  dashboard_generic_turn_halfday: "Appointment for half day",
+  dashboard_competition_title: "Tournament in date",
+  dashboard_competition_name: "Tournament name",
+  dashboard_competition_state: "State",
+  dashboard_app_hour: "Hour",
+  dashboard_app_court: "Court",
+  dashboard_app_court_type: "Internal/External Court",
+  internal: "Internal",
+  external: "External",
+  partecipant: "Partecipants",
+  no_partecipant: "No athletes",
+  master: "Masters",
+  no_master: "No masters"
+};
+const it = {
+  txt: 'Benvenuto nella tua area riservata, qui puoi visualizzare tutti i tuoi appuntamenti',
+  txt_label: "Visualizza i miei appuntamenti",
+  dashboard_title: "I miei appuntamenti",
+  dashboard_loading: "Aggiornamento Appuntamenti",
+  dashboard_calendar: "Vedi sul calendario",
+  dashboard_generic_turn_title: "Turno generico in data",
+  dashboard_generic_appointment: "Appuntamento in data",
+  dashboard_generic_turn_day: "Appuntamento per l'intera giornata",
+  dashboard_generic_turn_halfday: "Appuntamento per mezza giornata",
+  dashboard_competition_title: "Competizione in data",
+  dashboard_competition_name: "Nome Competizione",
+  dashboard_competition_state: "Stato",
+  dashboard_app_hour: "Orario",
+  dashboard_app_court: "Campo",
+  dashboard_app_court_type: "Campo Interno/Esterno",
+  internal: "Interno",
+  external: "Esterno",
+  partecipant: "Partecipanti",
+  no_partecipant: "Nessun partecipante",
+  master: "Maestri",
+  no_master: "Nessun maestro"
+};
+
+i18n.fallbacks = true;
+i18n.translations = { en, it };
+i18n.locale = Localization.locale;
 
 export default class HomePage extends React.Component {
     constructor(props) {
@@ -138,7 +190,7 @@ export default class HomePage extends React.Component {
                 />
                 </View>
                 <View style={styles.container}>
-                    <Text style={styles.text}>Benvenuto nella tua area riservata, qui puoi visualizzare tutti i tuoi appuntamenti</Text>
+                    <Text style={styles.text}>{i18n.t('txt')}</Text>
                     <AntDesign
                         name="down"
                         size={30}
@@ -147,7 +199,7 @@ export default class HomePage extends React.Component {
                 </View>
                 <View style={styles.homeButton}>
                 <TouchableOpacity style={styles.homeButton} onPress={()=>this.waitElements() }>
-                    <Text style={styles.textTouch}>{'Visualizza i miei appuntamenti'.toUpperCase()}</Text>
+                    <Text style={styles.textTouch}>{i18n.t('txt_label').toUpperCase()}</Text>
                 </TouchableOpacity>
                 </View>
                 </View>            
@@ -178,7 +230,7 @@ export default class HomePage extends React.Component {
             <ScrollView
                 refreshControl= {
                     <RefreshControl
-                        title="Aggiornamento appuntamenti"
+                        title={i18n.t('dashboard_loading')}
                         refreshing={this.state.refreshing}
                         onRefresh={this.onRefresh}
                     />
@@ -192,7 +244,7 @@ export default class HomePage extends React.Component {
                 size={60}
             />
             <Text style={styles.title}>{this.state.name.split('"').join('')}</Text>
-            <Text style={styles.title}>I miei appuntamenti:</Text>
+            <Text style={styles.title}>{i18n.t('dashboard_title')}:</Text>
                 <View>
                 {data.map(value => {
                     return this.state.calendarItems[value].map((val, index) => {
@@ -207,7 +259,7 @@ export default class HomePage extends React.Component {
                                         color="#663300"
                                     />
                                 </View>
-                                <View style={{marginLeft:35}}><Text style={{fontWeight:'bold', fontSize:16}}>{"Turno generico in data "+val.date}</Text></View>
+                                <View style={{marginLeft:35}}><Text style={{fontWeight:'bold', fontSize:16}}>{i18n.t('dashboard_generic_turn_title')+ " " +val.date}</Text></View>
                             </View>
                             <View style={{marginTop:20}}>
                                 <View style={{position: 'absolute'}}>
@@ -217,11 +269,11 @@ export default class HomePage extends React.Component {
                                     color="#808080"
                                 />
                                 </View>
-                                    <Text style={{color:"#808080", marginLeft:35}}>{val.generic == "one" ? "Appuntamento per l'intera giornata" : "Appuntamento per mezza giornata"}</Text>
+                                    <Text style={{color:"#808080", marginLeft:35}}>{val.generic == "one" ? i18n.t('dashboard_generic_turn_day') : i18n.t('dashboard_generic_turn_halfday')}</Text>
                             </View>
                             <View style={{marginTop: 30}}>
                                 <Button
-                                    title="Vedi sul calendario"
+                                    title={i18n.t('dashboard_calendar')}
                                     onPress={()=>this.props.navigation.dispatch(NavigationActions.navigate({ routeName:'Calendario', data: val.date }))}
                                     color="#663300"
                                 />
@@ -240,7 +292,7 @@ export default class HomePage extends React.Component {
                                                 color="#FFDD03"
                                             />
                                         </View>
-                                        <View style={{marginLeft:35}}><Text style={{fontWeight:'bold', fontSize:16}}>{"Competizione in data "+val.date}</Text></View>
+                                        <View style={{marginLeft:35}}><Text style={{fontWeight:'bold', fontSize:16}}>{i18n.t('dashboard_competition_title') + " " + val.date}</Text></View>
                                     </View>
                                    <View style={{marginTop:20}}>
                                         <View style={{position: 'absolute'}}>
@@ -250,7 +302,7 @@ export default class HomePage extends React.Component {
                                                 color="#808080"
                                             />
                                         </View>
-                                        <Text style={{color:"#808080", marginLeft:35}}>Nome Competizione: <Text style={styles.grassetto}>{val.competition_name}</Text></Text>
+                                        <Text style={{color:"#808080", marginLeft:35}}>{i18n.t('dashboard_competition_name')}: <Text style={styles.grassetto}>{val.competition_name}</Text></Text>
                                         <View style={{marginTop: 10}}>
                                         <View style={{position: 'absolute'}}>
                                             <FontAwesome
@@ -259,12 +311,12 @@ export default class HomePage extends React.Component {
                                                 color="#808080"
                                             />
                                         </View>
-                                        <Text style={{color:"#808080", marginLeft:35}}>Stato: <Text style={styles.grassetto}>{val.competition_state}</Text></Text>
+                                        <Text style={{color:"#808080", marginLeft:35}}>{i18n.t('dashboard_competition_state')}: <Text style={styles.grassetto}>{val.competition_state}</Text></Text>
                                         </View>
                                     </View>
                                     <View style={{marginTop: 30}}>
                                         <Button
-                                            title="Vedi sul calendario"
+                                            title={i18n.t('dashboard_calendar')}
                                             onPress={()=>{this.props.navigation.navigate('Calendario', {data:val.date})}}
                                             color="#663300"
                                         />
@@ -283,7 +335,7 @@ export default class HomePage extends React.Component {
                                     color="#663300"
                                 />
                             </View>
-                            <View style={{marginLeft:35}}><Text style={{fontWeight:'bold', fontSize:16}}>{val.name}</Text></View>
+                            <View style={{marginLeft:35}}><Text style={{fontWeight:'bold', fontSize:16}}>{i18n.t('dashboard_generic_appointment') + " " + val.date}</Text></View>
                             </View>
                                 <View style={{marginTop:10}}>
                                     <View style={{position: 'absolute'}}>
@@ -293,7 +345,7 @@ export default class HomePage extends React.Component {
                                             color="#808080"
                                         />
                                     </View>
-                                    <Text style={{color:"#808080", marginLeft:25}}>Orario:<Text style={styles.grassetto}> {val.start} - {val.end}</Text></Text>
+                                    <Text style={{color:"#808080", marginLeft:25}}>{i18n.t('dashboard_app_hour')}:<Text style={styles.grassetto}> {val.start} - {val.end}</Text></Text>
                                 </View>
                                 
                                 <View style={{marginTop:10}}>
@@ -304,7 +356,7 @@ export default class HomePage extends React.Component {
                                         color="#808080"
                                     />
                                     </View>
-                                    <Text style={{color:"#808080", marginLeft:25}}>Campo:<Text style={styles.grassetto}>{val.court}</Text></Text>
+                                    <Text style={{color:"#808080", marginLeft:25}}>{i18n.t('dashboard_app_court')}:<Text style={styles.grassetto}>{val.court}</Text></Text>
                                 </View>
                                 
                                 <View style={{marginTop:10}}>
@@ -326,7 +378,7 @@ export default class HomePage extends React.Component {
                                         color="#808080"
                                     />
                                     </View>
-                                <Text style={{color:"#808080", marginLeft:25}}>Campo interno/esterno:<Text style={styles.grassetto}>{val.indoor=="1" ? "Interno" : "Esterno" }</Text></Text>
+                                <Text style={{color:"#808080", marginLeft:25}}>{i18n.t('dashboard_app_court_type')}:<Text style={styles.grassetto}>{val.indoor=="1" ? i18n.t('internal') : i18n.t('external') }</Text></Text>
                                 </View>
 
                                 <View style={{marginTop:10}}>
@@ -337,9 +389,9 @@ export default class HomePage extends React.Component {
                                         color="#808080"
                                     />
                                     </View>
-                                    <View style={{marginLeft:30}}><Text style={{color:"#808080"}}>Partecipanti:</Text>
+                                    <View style={{marginLeft:30}}><Text style={{color:"#808080"}}>{i18n.t('partecipant')}:</Text>
                                         <View style={styles.listitem}>
-                                            { val.partecipant_list != 'undefined' && val.partecipant_list.athletes.length == 0 ? <Text style={{fontWeight: 'bold',color:"#808080"}}>Nessun partecipante</Text> : val.partecipant_list.athletes.map((value, index) => {
+                                            { val.partecipant_list != 'undefined' && val.partecipant_list.athletes.length == 0 ? <Text style={{fontWeight: 'bold',color:"#808080"}}>{i18n.t('no_partecipant')}</Text> : val.partecipant_list.athletes.map((value, index) => {
                                                 return(                                                    
                                                     <Text style={{fontWeight: 'bold',color:"#808080"}} key={Math.random()}>
                                                         <Entypo
@@ -361,9 +413,9 @@ export default class HomePage extends React.Component {
                                         color="#808080"
                                     />
                                     </View>
-                                    <View style={{marginLeft:30}}><Text style={{color:"#808080"}}>Maestri:</Text>
+                                    <View style={{marginLeft:30}}><Text style={{color:"#808080"}}>{i18n.t('master')}:</Text>
                                         <View style={styles.listitem}>
-                                            { val.partecipant_list != 'undefined' && val.partecipant_list.teachers.length == 0 ? <Text style={{fontWeight: 'bold',color:"#808080"}}>Nessun maestro</Text> : val.partecipant_list.teachers.map((value, index) => {
+                                            { val.partecipant_list != 'undefined' && val.partecipant_list.teachers.length == 0 ? <Text style={{fontWeight: 'bold',color:"#808080"}}>{i18n.t('no_master')}</Text> : val.partecipant_list.teachers.map((value, index) => {
                                                 return(
                                                     <Text style={{fontWeight: 'bold',color:"#808080"}} key={Math.random()}> 
                                                         <FontAwesome
@@ -378,7 +430,7 @@ export default class HomePage extends React.Component {
                                 </View>
                                 <View style={{marginTop: 30}}>
                                     <Button
-                                        title="Vedi sul calendario"
+                                        title={i18n.t('dashboard_calendar')}
                                         onPress={()=>{this.props.navigation.navigate('Calendario', {data:val.date})}}
                                         color="#663300"
                                     />
