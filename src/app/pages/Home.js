@@ -10,7 +10,8 @@ import CalendarPage from './CalendarPage';
 import { Ionicons, AntDesign, FontAwesome, Foundation, Entypo, MaterialCommunityIcons } from '@expo/vector-icons';
 import ItemsStorage from '../components/ItemsStorage';
 import ApiService from '../../services/api-admin/config';
-
+import { Notifications } from 'expo';
+import { NetInfo } from 'react-native';
 
 export default class HomePage extends React.Component {
     constructor(props) {
@@ -18,15 +19,26 @@ export default class HomePage extends React.Component {
         this.state = {
             calendarItems: {},
             isLoading: false,
+            name:'',
             refreshing: false,
             appointments: false,
         }
-        //this.getItemsCalendar();
 
     }
 
-    //qui posso modificare il nome della voce di menu
+    componentWillMount() {
+        this.listener = Notifications.addListener(this.listen);
+    }
+    /*componentWillUnmount() {
+        this.listener && Notifications.removeListener(this.listen);
+    }*/
+    listen = ({origin, data}) => {
+        this.setState({refreshing:true});
+        this.onRefresh();
+        
+    }
 
+    //qui posso modificare il nome della voce di menu
     static navigationOptions = ({navigation}) => {
         //console.log(navigation);
         return {
@@ -59,14 +71,24 @@ export default class HomePage extends React.Component {
     waitElements = async() => {
         this.setState({isLoading:true});
         const items = await AsyncStorage.getItem('calendarItems');
-        items?this.getItemsCalendar():this.onRefresh()
+        NetInfo.isConnected.fetch().then(isConnected => {
+           if(isConnected)
+           {
+               this.onRefresh(); //qui vado a refreshare gli appuntamenti se sono connesso a internet
+           }
+           else {
+               items?this.getItemsCalendar():this.onRefresh()
+           }
+        })        
     }
 
     getItemsCalendar = async() => {
         try {            
             const items = await AsyncStorage.getItem('calendarItems')
             let itemsObj = JSON.parse(items);
-            const allItems = {}
+            const allItems = {};
+            const customer_name = await AsyncStorage.getItem('nome');
+            const customer_surname = await AsyncStorage.getItem('cognome')
 
             if(itemsObj != null) {
                 Object.keys(itemsObj).forEach(key => {
@@ -79,7 +101,8 @@ export default class HomePage extends React.Component {
             this.setState({
                 calendarItems:allItems,
                 isLoading: false,
-                appointments: true
+                appointments: true,
+                name: customer_name + ' ' + customer_surname
             });          
         }
         catch(error) {
@@ -98,7 +121,6 @@ export default class HomePage extends React.Component {
             console.log(e);
         }
     }*/
-
     render() {
         if(this.state.isLoading == false && this.state.appointments == false || this.state.calendarItems == null ) { //qui entro se non ho item salvati
             return (
@@ -145,16 +167,18 @@ export default class HomePage extends React.Component {
             });
             return (
             <View style={{backgroundColor: '#F5F5F5'}}>
-            <Ionicons
+            {//icona del torna in Home PAge che per adesso lascio commentata
+            /*<Ionicons
                 name="md-arrow-dropleft-circle"
                 onPress={()=>this.goBack()}
                 size={60}
                 color="#663300"
                 style={styles.returnIcon}
-            />
+            />*/}
             <ScrollView
                 refreshControl= {
                     <RefreshControl
+                        title="Aggiornamento appuntamenti"
                         refreshing={this.state.refreshing}
                         onRefresh={this.onRefresh}
                     />
@@ -167,6 +191,7 @@ export default class HomePage extends React.Component {
                 style={{textAlign:'center', marginTop: 10}}
                 size={60}
             />
+            <Text style={styles.title}>{this.state.name.split('"').join('')}</Text>
             <Text style={styles.title}>I miei appuntamenti:</Text>
                 <View>
                 {data.map(value => {
@@ -408,10 +433,7 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     returnIcon: {
-        flex:1,
         position: 'absolute',
-        elevation: 2,
-        bottom: 20,
         zIndex: 9,
         left: 5
     },

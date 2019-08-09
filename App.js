@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, NativeModules, Platform } from 'react-native';
+import { StyleSheet, Text, View, NativeModules, Platform, AsyncStorage } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import AppNavigator from './src/services/navigator/AppNavigator'
 import HomePage from './src/app/pages/Home';
-import { Permissions, Notifications } from 'expo';
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
 
 if (Platform.OS === 'android') {
 //questo mi serve per pescare la lingua su Android (devo settarla come variabile globale)
@@ -50,7 +51,7 @@ export default class App extends React.Component {
 		this.listener && Notifications.removeListener(this.listen);
 	}
 	listen = ({origin, data}) => {
-		//console.log("data", origin, data);
+		
 	}
 	render() {
 		return(

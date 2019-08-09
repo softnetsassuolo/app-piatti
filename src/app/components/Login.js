@@ -32,6 +32,8 @@ export default class Login extends React.Component {
                 AsyncStorage.setItem('token', resp.token); //salvo il token grazie all'AsyncStorage
                 AsyncStorage.setItem('username', username); //salvo l'username
                 AsyncStorage.setItem('id_customer', JSON.stringify(resp.customer[0]['id'])); //salvo l'id del cliente
+                AsyncStorage.setItem('nome', JSON.stringify(resp.customer[0]['name']));
+                AsyncStorage.setItem('cognome', JSON.stringify(resp.customer[0]['surname']));
                 return this.props.navigation.navigate('HomePage');//Navigator.switchNavigator(HomePage);
                 //const customnav = Navigator.switchNavigator(HomePage);
             }

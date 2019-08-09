@@ -10,7 +10,8 @@ export default class Logout extends React.Component {
 
 	_logout = async () => {
 		try {
-	        const removeToken = await AsyncStorage.removeItem('token');
+			let keys = ['token', 'calendarItems'];
+	        const removeToken = await AsyncStorage.multiRemove(keys);
 	        this.props.navigation.navigate('Auth');
 	    }
 	    catch(error) {

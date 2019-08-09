@@ -4,7 +4,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, KeybordAvoidingView, AsyncStorage, } from 'react-native';
 import {createStackNavigator} from 'react-navigation';
-import { Constants } from 'expo';
+import * as Constants from 'expo-constants';
 
 export class ApiService {
 
@@ -38,8 +38,7 @@ export class ApiService {
 
     //qui costruisco il percorso all'API
     static constructUrlFromParams(params:any) {
-        let baseUrl=Constants.manifest.extra.apiUrl;
-
+        let baseUrl=Constants.default.manifest.extra.apiUrl;
         let realpath = "";
 
         realpath = baseUrl + params.entity;
