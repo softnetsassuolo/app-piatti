@@ -12,7 +12,7 @@
     },
     "android": {
       "package": "com.softnet.test.piatti",
-      "versionCode": 5 
+      "versionCode": 6 
     },
     "platforms": [
       "ios",
@@ -21,7 +21,7 @@
     "extra": {
       "apiUrl": "http://planner.piattitenniscenter.it/"
     },
-    "version": "1.0.5",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "splash": {

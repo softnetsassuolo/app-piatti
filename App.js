@@ -6,6 +6,7 @@ import HomePage from './src/app/pages/Home';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 
+
 if (Platform.OS === 'android') {
 //questo mi serve per pescare la lingua su Android (devo settarla come variabile globale)
 global.locale = NativeModules.I18nManager.localeIdentifier;

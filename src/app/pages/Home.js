@@ -14,6 +14,8 @@ import { Notifications } from 'expo';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 
+
+
 const en = {
   txt: 'Welcome in your reserved area, here you can see all your appointments',
   txt_label: "View my appointments",
@@ -65,6 +67,7 @@ i18n.fallbacks = true;
 i18n.translations = { en, it };
 i18n.locale = Localization.locale;
 
+
 export default class HomePage extends React.Component {
     constructor(props) {
         super(props);
@@ -75,6 +78,7 @@ export default class HomePage extends React.Component {
             refreshing: false,
             appointments: false,
         }
+        
 
     }
 
@@ -113,6 +117,7 @@ export default class HomePage extends React.Component {
             this.setState({refreshing:false, calendarItems:val, appointments:true, isLoading:false})
         });
         this.getItemsCalendar();
+        i18n.translations = { en, it };
     }
 
     goBack = async() => {
